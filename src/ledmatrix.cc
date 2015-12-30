@@ -76,6 +76,8 @@ Handle<Value> LedMatrix::New(const Arguments& args) {
     int rows = 32;
     int chained = 1;
     int parallel = 1;
+		int brightness = 100;
+		bool is64By64 = false;
 
 	if(args.Length() > 0 && args[0]->IsNumber()) {
 		rows = args[0]->ToInteger()->Value();
