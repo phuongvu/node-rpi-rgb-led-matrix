@@ -78,16 +78,16 @@ Handle<Value> LedMatrix::New(const Arguments& args) {
     int parallel = 1;
 
 	if(args.Length() > 0 && args[0]->IsNumber()) {
-    	rows = args[0]->ToInteger()->Value();
-    }
+		rows = args[0]->ToInteger()->Value();
+	}
 
-    if(args.Length() > 1 && args[1]->IsNumber()) {
-    	chained = args[1]->ToInteger()->Value();
-    }
+	if(args.Length() > 1 && args[1]->IsNumber()) {
+		chained = args[1]->ToInteger()->Value();
+	}
 
-    if(args.Length() > 2 && args[2]->IsNumber()) {
-    	parallel = args[2]->ToInteger()->Value();
-    }
+	if(args.Length() > 2 && args[2]->IsNumber()) {
+		parallel = args[2]->ToInteger()->Value();
+	}
 
 	if(args.Length() > 3 && args[3]->IsNumber()) {
 		brightness = args[3]->ToInteger()->Value();
