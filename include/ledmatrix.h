@@ -42,7 +42,7 @@ class LedMatrix : public ObjectWrap {
 		void Fill(uint8_t r, uint8_t g, uint8_t b);
 
 	protected:
-		LedMatrix(int rows = 16, int chained_displays = 1, int parallel_displays = 1);
+		LedMatrix(int rows = 16, int chained_displays = 1, int parallel_displays = 1, int brightness = 100, bool is64By64 = false);
 
 		virtual ~LedMatrix();
 

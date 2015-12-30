@@ -14,11 +14,16 @@ using namespace v8;
 using namespace node;
 using namespace rgb_matrix;
 using rgb_matrix::GPIO;
+using rgb_matrix::CanvasTransformer;
 
-LedMatrix::LedMatrix(int rows, int chained_displays, int parallel_displays) {
+LedMatrix::LedMatrix(int rows, int chained_displays, int parallel_displays, int brightness, bool is64By64) {
 	assert(io.Init());
 	matrix = new RGBMatrix(&io, rows, chained_displays, parallel_displays);	
 	matrix->set_luminance_correct(true);
+	matrix->SetBrightness(brightness);
+	if (is64By64) {
+		matrix->SetTransformer(new rgb_matrix::LargeSquare64x64Transformer());
+	}
 }
 
 LedMatrix::~LedMatrix() {
@@ -84,8 +89,16 @@ Handle<Value> LedMatrix::New(const Arguments& args) {
     	parallel = args[2]->ToInteger()->Value();
     }
 
+	if(args.Length() > 3 && args[3]->IsNumber()) {
+		brightness = args[3]->ToInteger()->Value();
+	}
 
-	LedMatrix* matrix = new LedMatrix(rows, chained, parallel);
+	if(args.Length() > 4 && args[4]->IsBoolean()) {
+		is64By64 = args[4]->ToBoolean()->Value();
+	}
+
+	LedMatrix* matrix = new LedMatrix(rows, chained, parallel, brightness, is64By64);
+
 	matrix->Wrap(args.This());
 
 	matrix->self = Persistent<Object>::New(args.This());
