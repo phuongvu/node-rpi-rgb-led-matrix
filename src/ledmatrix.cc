@@ -264,11 +264,3 @@ void LedMatrix::Draw(const Nan::FunctionCallbackInfo<v8::Value>& args) {
 
   matrix->Draw(startx, starty, width, height, imgx, imgy, looph, loopv);
 }
-
-void LedMatrix::Rotate(const Nan::FunctionCallbackInfo<V8::Value>& args) {
-    LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.This());
-
-    if(args.Length() > 2 && args[2]->IsNumber()) {
-        matrix->SetTransformer(new rgb_matrix::RotateTransformer(args[2]->ToInteger()->Value()));
-    }
-}
