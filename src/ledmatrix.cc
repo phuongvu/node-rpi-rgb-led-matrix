@@ -20,7 +20,6 @@ using namespace rgb_matrix;
 using rgb_matrix::GPIO;
 using rgb_matrix::CanvasTransformer;
 
-
 Nan::Persistent<v8::Function> LedMatrix::constructor;
 
 LedMatrix::LedMatrix(int rows, int chained_displays, int parallel_displays, int brightness, bool is64By64) {
@@ -56,6 +55,7 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "fill", Fill);
 	Nan::SetPrototypeMethod(tpl, "setImageBuffer", SetImageBuffer);
 	Nan::SetPrototypeMethod(tpl, "draw", Draw);
+	Nan::SetPrototypeMethod(tpl, "rotate", Rotate);
 	
 	constructor.Reset(tpl->GetFunction());
 
@@ -117,6 +117,10 @@ void LedMatrix::Draw(int screenx, int screeny, int width, int height, int imgx, 
 			matrix->SetPixel(sx, sy, p.R(), p.G(), p.B());
 		}
 	}
+}
+
+void LedMatrix::Rotate(int angle) {
+	matrix->SetTransformer(new rgb_matrix::RotateTransformer(angle));
 }	
 
 void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
@@ -263,4 +267,11 @@ void LedMatrix::Draw(const Nan::FunctionCallbackInfo<v8::Value>& args) {
 
 
   matrix->Draw(startx, starty, width, height, imgx, imgy, looph, loopv);
+}
+
+void LedMatrix::Rotate(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+	LedMatrix* ledmatrix = ObjectWrap::Unwrap<LedMatrix>(args.This());
+	int angle = 0;
+	if(args.Length() > 0 && args[0]->IsNumber()) angle = args[0]->ToInteger()->Value();
+	ledmatrix->matrix->SetTransformer(new rgb_matrix::RotateTransformer(angle));
 }
