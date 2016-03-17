@@ -36,6 +36,7 @@ class LedMatrix : public node::ObjectWrap {
 		void SetImage(Image* img);
 		void Draw(int screenx, int screeny, int width, int height, int imgx, int imgy,
 					bool looph, bool loopv);
+		void Rotate(int angle);
 
 	protected:
 		LedMatrix(int rows = 16, int chained_displays = 1, int parallel_displays = 1, int brightness = 100, bool is64By64 = false);
@@ -51,6 +52,7 @@ class LedMatrix : public node::ObjectWrap {
 		static void Fill(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void SetImageBuffer(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void Draw(const Nan::FunctionCallbackInfo<v8::Value>& args);
+		static void Rotate(const Nan::FunctionCallbackInfo<V8::Value>& args);
 
 	private:
 
