@@ -273,5 +273,12 @@ void LedMatrix::Rotate(const Nan::FunctionCallbackInfo<v8::Value>& args) {
 	LedMatrix* ledmatrix = ObjectWrap::Unwrap<LedMatrix>(args.This());
 	int angle = 0;
 	if(args.Length() > 0 && args[0]->IsNumber()) angle = args[0]->ToInteger()->Value();
-	ledmatrix->matrix->SetTransformer(new rgb_matrix::RotateTransformer(angle));
+	if(angle == 0) {
+		ledmatrix->matrix->SetTransformer(new rgb_matrix::LargeSquare64x64Transformer());
+	} else {
+		LinkedTransformer* linked = new rgb_matrix::LinkedTransformer();
+		linked->AddTransformer(new rgb_matrix::LargeSquare64x64Transformer());
+		linked->AddTransformer(new rgb_matrix::RotateTransformer(angle));
+		ledmatrix->matrix->SetTransformer(linked);
+	}
 }
